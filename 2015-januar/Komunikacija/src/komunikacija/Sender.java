@@ -14,10 +14,16 @@ import java.net.Socket;
  */
 public class Sender {
 
-    Socket socket;
+    private final ObjectOutputStream out;
 
-    public Sender(Socket socket) {
-        this.socket = socket;
+    public Sender(Socket socket) throws Exception {
+        try {
+            this.out = new ObjectOutputStream(socket.getOutputStream());
+            this.out.flush();
+        } catch (Exception e) {
+            throw new Exception("Greska pri inicijalizaciji sender-a");
+        }
+
     }
 
     public Sender() {
@@ -25,7 +31,7 @@ public class Sender {
 
     public void send(Object obj) throws Exception {
         try {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.reset();
             out.writeObject(obj);
             out.flush();
         } catch (Exception e) {
