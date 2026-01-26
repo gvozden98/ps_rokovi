@@ -1,10 +1,10 @@
+package domen;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Student implements Serializable {
 
-    private Long studentID;
+    private Integer studentID;
     private String brojIndeksa;
     private Integer godinaUpisa;
     private String ime;
@@ -13,7 +13,7 @@ public class Student implements Serializable {
     public Student() {
     }
 
-    public Student(Long studentID, String brojIndeksa, Integer godinaUpisa, String ime, String prezime) {
+    public Student(Integer studentID, String brojIndeksa, Integer godinaUpisa, String ime, String prezime) {
         this.studentID = studentID;
         this.brojIndeksa = brojIndeksa;
         this.godinaUpisa = godinaUpisa;
@@ -21,11 +21,11 @@ public class Student implements Serializable {
         this.prezime = prezime;
     }
 
-    public Long getStudentID() {
+    public Integer getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(Long studentID) {
+    public void setStudentID(Integer studentID) {
         this.studentID = studentID;
     }
 

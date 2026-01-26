@@ -23,10 +23,6 @@ public class Sender {
         } catch (Exception e) {
             throw new Exception("Greska pri inicijalizaciji sender-a");
         }
-
-    }
-
-    public Sender() {
     }
 
     public void send(Object obj) throws Exception {

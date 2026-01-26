@@ -1,10 +1,11 @@
+package domen;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Profesor implements Serializable {
 
-    private Long profesorID;
+    private Integer profesorID;
     private String ime;
     private String prezime;
     private String zvanje;
@@ -12,18 +13,18 @@ public class Profesor implements Serializable {
     public Profesor() {
     }
 
-    public Profesor(Long profesorID, String ime, String prezime, String zvanje) {
+    public Profesor(Integer profesorID, String ime, String prezime, String zvanje) {
         this.profesorID = profesorID;
         this.ime = ime;
         this.prezime = prezime;
         this.zvanje = zvanje;
     }
 
-    public Long getProfesorID() {
+    public Integer getProfesorID() {
         return profesorID;
     }
 
-    public void setProfesorID(Long profesorID) {
+    public void setProfesorID(Integer profesorID) {
         this.profesorID = profesorID;
     }
 

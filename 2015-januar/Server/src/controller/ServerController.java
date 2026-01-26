@@ -4,10 +4,39 @@
  */
 package controller;
 
+import domen.Student;
+import java.util.List;
+import so.GetProfesoriSO;
+import so.GetStudentiSO;
+
 /**
  *
  * @author Ognjen
  */
 public class ServerController {
 
+    private static ServerController instance;
+
+    private ServerController() {
+
+    }
+
+    public static ServerController getInstance() {
+        if (instance == null) {
+            instance = new ServerController();
+        }
+        return instance;
+    }
+
+    public List<Student> getStudenti() throws Exception {
+        GetStudentiSO so = new GetStudentiSO();
+        so.execute(null);
+        return so.getStudenti();
+    }
+
+    public Object getProfesori() throws Exception {
+        GetProfesoriSO so = new GetProfesoriSO();
+        so.execute(null);
+        return so.getProfesori();
+    }
 }

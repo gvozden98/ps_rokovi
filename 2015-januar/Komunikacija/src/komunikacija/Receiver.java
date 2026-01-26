@@ -24,9 +24,6 @@ public class Receiver {
         }
     }
 
-    public Receiver() {
-    }
-
     public Object receive() throws Exception {
         try {
             return in.readObject();

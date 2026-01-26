@@ -20,7 +20,8 @@ public abstract class AbstractSO {
         Connection conn = null;
         try {
             conn = DatabaseConnection.getInstance().getConnection();
-            dbbr = new DatabaseBroker();
+            dbbr = new DatabaseBroker(conn);
+
             validate(object);
             executeOperation(object);
         } catch (Exception e) {

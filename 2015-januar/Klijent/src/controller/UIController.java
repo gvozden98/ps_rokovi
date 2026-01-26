@@ -7,6 +7,7 @@ package controller;
 import java.net.Socket;
 import komunikacija.Receiver;
 import komunikacija.Sender;
+import domen.Student;
 
 /**
  *
