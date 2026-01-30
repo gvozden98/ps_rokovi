@@ -4,6 +4,8 @@
  */
 package main;
 
+import forms.FrmKlijent;
+
 /**
  *
  * @author Ognjen
@@ -11,6 +13,8 @@ package main;
 public class Main {
 
     public static void main(String[] args) {
+        FrmKlijent fk = new FrmKlijent();
+        fk.setVisible(true);
 
     }
 }

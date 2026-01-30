@@ -14,23 +14,19 @@ import java.net.Socket;
  */
 public class Receiver {
 
-    private final ObjectInputStream in;
+    private Socket socket;
 
-    public Receiver(Socket socket) throws Exception {
-        try {
-            this.in = new ObjectInputStream(socket.getInputStream());
-        } catch (Exception e) {
-            throw new Exception("Greska pri inicijalizaciji receivera!");
-        }
+    public Receiver(Socket socket) {
+        this.socket = socket;
     }
 
     public Object receive() throws Exception {
         try {
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             return in.readObject();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("Greska pri primanju!");
+            throw new Exception("Greska");
         }
     }
-
 }

@@ -7,6 +7,7 @@ package controller;
 import domen.Student;
 import java.util.List;
 import so.GetProfesoriSO;
+import so.GetStatusiRadaSO;
 import so.GetStudentiSO;
 
 /**
@@ -38,5 +39,11 @@ public class ServerController {
         GetProfesoriSO so = new GetProfesoriSO();
         so.execute(null);
         return so.getProfesori();
+    }
+
+    public Object getStatusiRada() throws Exception {
+        GetStatusiRadaSO so = new GetStatusiRadaSO();
+        so.execute(null);
+        return so.getStatusiRada();
     }
 }

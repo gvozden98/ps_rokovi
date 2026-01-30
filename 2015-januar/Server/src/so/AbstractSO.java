@@ -16,34 +16,34 @@ public abstract class AbstractSO {
 
     protected DatabaseBroker dbbr;
 
-    public final void execute(Object object) throws Exception {
-        Connection conn = null;
-        try {
-            conn = DatabaseConnection.getInstance().getConnection();
-            dbbr = new DatabaseBroker(conn);
+    public AbstractSO() {
+        dbbr = new DatabaseBroker();
+    }
 
+    public final void execute(Object object) throws Exception {
+        try {
             validate(object);
             executeOperation(object);
+            DatabaseConnection.getInstance().getConnection().commit();
         } catch (Exception e) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (Exception ignored) {
-                }
-                throw new Exception("Greska pri izvrsavanju operacije!", e);
-
-            }
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (Exception ignored) {
-                }
-            }
+            rollback();
         }
+
+//        finally {
+//            if (conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (Exception ignored) {
+//                }
+//            }
+//
     }
 
     protected abstract void validate(Object object) throws Exception;
 
     protected abstract void executeOperation(Object object) throws Exception;
+
+    private void rollback() throws Exception {
+        DatabaseConnection.getInstance().rollback();
+    }
 }

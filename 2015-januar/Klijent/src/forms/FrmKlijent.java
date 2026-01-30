@@ -4,17 +4,36 @@
  */
 package forms;
 
+import controller.UIController;
+import domen.IstorijaStatusaRada;
+import domen.Student;
+import domen.Profesor;
+import domen.Rad;
+import domen.StatusRada;
+import java.time.LocalDateTime;
+
+import java.util.List;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Ognjen
  */
 public class FrmKlijent extends javax.swing.JFrame {
 
+    private StatusRada sr;
+    private List<IstorijaStatusaRada> statusiRada;
+    private Rad r;
+
     /**
      * Creates new form FrmKlijent
      */
     public FrmKlijent() {
         initComponents();
+        popuniCBProfesor();
+        popuniCBStudent();
     }
 
     /**
@@ -31,12 +50,12 @@ public class FrmKlijent extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,11 +65,11 @@ public class FrmKlijent extends javax.swing.JFrame {
 
         jLabel3.setText("Tema:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -66,6 +85,11 @@ public class FrmKlijent extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Dodaj status rada");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Obrisi status rada");
 
@@ -89,7 +113,7 @@ public class FrmKlijent extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jTextField1)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -113,7 +137,7 @@ public class FrmKlijent extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -128,6 +152,26 @@ public class FrmKlijent extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DodajStatusRada dsr = new DodajStatusRada(this, true);
+        if (dsr.getSr() != null) {
+            sr = dsr.getSr();
+            Student s = (Student) jComboBox1.getSelectedItem();
+            Profesor p = (Profesor) jComboBox2.getSelectedItem();
+            String tema = jTextField1.getText();
+            r = new Rad(tema, s, p);
+            IstorijaStatusaRada isr = new IstorijaStatusaRada();
+            isr.setDatum(LocalDateTime.now());
+            isr.setStatusRada(sr);
+            isr.setRad(r);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,13 +212,48 @@ public class FrmKlijent extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<Student> jComboBox1;
+    private javax.swing.JComboBox<Profesor> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    public void popuniCBStudent() {
+        try {
+            List<Student> studenti = UIController.getInstance().getSviStudenti();
+            for (Student student : studenti) {
+                jComboBox1.addItem(student);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Greska pri ucitavanju studenata", "Greska", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }
+
+    public void popuniCBProfesor() {
+        try {
+            List<Profesor> profesori = UIController.getInstance().getSviProfesori();
+            for (Profesor profesor : profesori) {
+                jComboBox2.addItem(profesor);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Greska pri ucitavanju profesora", "Greska", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    public void dodajStatusRada() {
+
+        Student s = (Student) jComboBox1.getSelectedItem();
+        Profesor p = (Profesor) jComboBox2.getSelectedItem();
+        String tema = jTextField1.getText();
+
+        Rad r = new Rad(tema, s, p);
+
+    }
 }

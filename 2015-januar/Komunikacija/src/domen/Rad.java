@@ -1,6 +1,5 @@
 package domen;
 
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,6 +15,12 @@ public class Rad implements Serializable {
 
     public Rad(Long radID, String tema, Student student, Profesor profesor) {
         this.radID = radID;
+        this.tema = tema;
+        this.student = student;
+        this.profesor = profesor;
+    }
+
+    public Rad(String tema, Student student, Profesor profesor) {
         this.tema = tema;
         this.student = student;
         this.profesor = profesor;

@@ -5,6 +5,7 @@
 package db;
 
 import domen.Profesor;
+import domen.StatusRada;
 import domen.Student;
 import java.sql.*;
 import java.util.LinkedList;
@@ -16,17 +17,11 @@ import java.util.List;
  */
 public class DatabaseBroker {
 
-    private Connection conn;
-
-    public DatabaseBroker(Connection conn) {
-        this.conn = conn;
-    }
-
     public List<Student> getSviStudenti() throws Exception {
         List<Student> studenti = new LinkedList<>();
         String sql = "SELECT * from student";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Student s = new Student();
@@ -45,11 +40,11 @@ public class DatabaseBroker {
         return studenti;
     }
 
-    public List<Profesor> getSviProfesori() throws SQLException {
+    public List<Profesor> getSviProfesori() throws Exception {
         List<Profesor> profesori = new LinkedList<>();
-        String sql = "SELECT * from student";
+        String sql = "SELECT * from profesor";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Profesor p = new Profesor();
@@ -61,6 +56,22 @@ public class DatabaseBroker {
             }
         }
         return profesori;
+    }
+
+    public List<StatusRada> getSviStatusiRada() throws Exception {
+        List<StatusRada> statusiRada = new LinkedList<>();
+        String sql = "SELECT * from statusrada";
+
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                StatusRada sr = new StatusRada();
+                sr.setStatusID(rs.getLong("StatusID"));
+                sr.setNazivStatusa(rs.getString("NazivStatusa"));
+                statusiRada.add(sr);
+            }
+        }
+        return statusiRada;
     }
 
 }

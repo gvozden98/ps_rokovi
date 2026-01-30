@@ -4,6 +4,7 @@
  */
 package komunikacija;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -14,25 +15,23 @@ import java.net.Socket;
  */
 public class Sender {
 
-    private final ObjectOutputStream out;
+    Socket socket;
 
-    public Sender(Socket socket) throws Exception {
-        try {
-            this.out = new ObjectOutputStream(socket.getOutputStream());
-            this.out.flush();
-        } catch (Exception e) {
-            throw new Exception("Greska pri inicijalizaciji sender-a");
-        }
+    public Sender() {
     }
 
-    public void send(Object obj) throws Exception {
+    public Sender(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void send(Object object) throws Exception {
         try {
-            out.reset();
-            out.writeObject(obj);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(object);
             out.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            throw new Exception("Greska pri slanju objekta!");
+            throw new Exception("Greska pri slanju objekta!\n" + e.getMessage());
         }
     }
 }

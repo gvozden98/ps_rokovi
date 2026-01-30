@@ -17,7 +17,7 @@ public class DatabaseConnection {
     private final String url = "jdbc:mysql://localhost:3306/2015-januar";
     private final String user = "root";
     private final String password = "";
-    private final Connection connection;
+    private Connection connection;
 
     private DatabaseConnection() throws Exception {
         try {
@@ -38,8 +38,19 @@ public class DatabaseConnection {
         return instance;
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws Exception {
         return connection;
+    }
+
+    public void rollback() throws Exception {
+        try {
+            connection.rollback();
+            System.out.println("Transakcija uspesno ponistena!");
+        } catch (SQLException ex) {
+            System.out.println("Transakcija nije ponistena!\n" + ex.getMessage());
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
 }

@@ -5,6 +5,7 @@
 package main;
 
 import forms.FrmServer;
+import server.Server;
 
 /**
  *
@@ -15,5 +16,12 @@ public class Main {
     public static void main(String[] args) {
         FrmServer frmServer = new FrmServer();
         frmServer.setVisible(true);
+        try {
+            Server server = new Server();
+            server.startServer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

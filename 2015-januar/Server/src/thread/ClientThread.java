@@ -45,7 +45,10 @@ public class ClientThread extends Thread {
                             response.setResult(ServerController.getInstance().getStudenti());
                             break;
                         case GetALLProfesori:
-
+                            response.setResult(ServerController.getInstance().getProfesori());
+                            break;
+                        case GetAllStatusiRada:
+                            response.setResult(ServerController.getInstance().getStatusiRada());
                             break;
                         default:
                             throw new AssertionError("N/A");
@@ -62,7 +65,7 @@ public class ClientThread extends Thread {
                 System.out.println("Greska u komunikaciji" + e.getMessage());
                 break;
             } finally {
-                closeQuietly();
+                //closeQuietly();
             }
         }
     }
