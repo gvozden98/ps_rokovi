@@ -5,12 +5,14 @@
 package thread;
 
 import controller.ServerController;
+import domen.StatusRada;
 import java.io.EOFException;
 import java.net.Socket;
 import java.net.SocketException;
 import komunikacija.Receiver;
 import komunikacija.Request;
 import komunikacija.Response;
+import komunikacija.SacuvajRadRequest;
 import komunikacija.Sender;
 import server.Server;
 
@@ -51,7 +53,8 @@ public class ClientThread extends Thread {
                             response.setResult(ServerController.getInstance().getStatusiRada());
                             break;
                         case SacuvajRad:
-                            ServerController.getInstance().setRad();
+                            ServerController.getInstance().setRad((SacuvajRadRequest) request.getArgument());
+                            break;
                         default:
                             throw new AssertionError("N/A");
                     }

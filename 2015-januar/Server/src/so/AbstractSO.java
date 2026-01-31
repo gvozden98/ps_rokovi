@@ -27,6 +27,7 @@ public abstract class AbstractSO {
             DatabaseConnection.getInstance().getConnection().commit();
         } catch (Exception e) {
             rollback();
+            throw e;
         }
 
 //        finally {

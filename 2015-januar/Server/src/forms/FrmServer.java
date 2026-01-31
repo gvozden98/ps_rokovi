@@ -4,6 +4,8 @@
  */
 package forms;
 
+import thread.ServerThread;
+
 /**
  *
  * @author Ognjen
@@ -15,6 +17,7 @@ public class FrmServer extends javax.swing.JFrame {
      */
     public FrmServer() {
         initComponents();
+
     }
 
     /**
@@ -142,4 +145,10 @@ public class FrmServer extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+    public void fillTable() {
+        while (true) {
+            ServerThread st = new ServerThread();
+            st.start(this);
+        }
+    }
 }

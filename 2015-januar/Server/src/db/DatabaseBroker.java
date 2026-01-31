@@ -4,7 +4,9 @@
  */
 package db;
 
+import domen.IstorijaStatusaRada;
 import domen.Profesor;
+import domen.Rad;
 import domen.StatusRada;
 import domen.Student;
 import java.sql.*;
@@ -66,12 +68,43 @@ public class DatabaseBroker {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 StatusRada sr = new StatusRada();
-                sr.setStatusID(rs.getLong("StatusID"));
+                sr.setStatusID(rs.getInt("StatusID"));
                 sr.setNazivStatusa(rs.getString("NazivStatusa"));
                 statusiRada.add(sr);
             }
         }
         return statusiRada;
+    }
+
+    public Integer insertRad(Rad rad) throws Exception {
+        String sql = "INSERT INTO rad (Tema, StudentID, ProfesorID) VALUES(?,?,?)";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, rad.getTema());
+            ps.setInt(2, rad.getStudent().getStudentID());
+            ps.setInt(3, rad.getProfesor().getProfesorID());
+            int dodato = ps.executeUpdate();
+            if (dodato != 1) {
+                throw new Exception("Greska pri dodavanju rada u bazu!");
+            }
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+                throw new Exception("Nije vracen id rada!");
+            }
+        }
+    }
+
+    public void insertIstorijaStatusaRada(IstorijaStatusaRada isr) throws Exception {
+        String sql = "INSERT INTO istorijastatusarada(RadID, RB, Datum, StatusRadaID) VALUES(?,?,?,?)";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, isr.getRad().getRadID());
+            ps.setInt(2, isr.getRb());
+            ps.setObject(3, isr.getDatum());
+            ps.setInt(4, isr.getStatusRada().getStatusID());
+            ps.executeUpdate();
+        }
+
     }
 
 }

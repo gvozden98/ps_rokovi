@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Rad implements Serializable {
 
-    private Long radID;
+    private Integer radID;
     private String tema;
     private Student student;
     private Profesor profesor;
@@ -13,7 +13,7 @@ public class Rad implements Serializable {
     public Rad() {
     }
 
-    public Rad(Long radID, String tema, Student student, Profesor profesor) {
+    public Rad(Integer radID, String tema, Student student, Profesor profesor) {
         this.radID = radID;
         this.tema = tema;
         this.student = student;
@@ -26,11 +26,11 @@ public class Rad implements Serializable {
         this.profesor = profesor;
     }
 
-    public Long getRadID() {
+    public Integer getRadID() {
         return radID;
     }
 
-    public void setRadID(Long radID) {
+    public void setRadID(Integer radID) {
         this.radID = radID;
     }
 

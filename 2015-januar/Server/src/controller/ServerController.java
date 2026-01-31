@@ -6,9 +6,11 @@ package controller;
 
 import domen.Student;
 import java.util.List;
+import komunikacija.SacuvajRadRequest;
 import so.GetProfesoriSO;
 import so.GetStatusiRadaSO;
 import so.GetStudentiSO;
+import so.SetRadSO;
 
 /**
  *
@@ -47,7 +49,8 @@ public class ServerController {
         return so.getStatusiRada();
     }
 
-    public void setRad() {
+    public void setRad(SacuvajRadRequest srr) throws Exception {
         SetRadSO so = new SetRadSO();
+        so.execute(srr);
     }
 }

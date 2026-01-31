@@ -1,27 +1,26 @@
 package domen;
 
-
 import java.io.Serializable;
 import java.util.Objects;
 
 public class StatusRada implements Serializable {
 
-    private Long statusID;
+    private Integer statusID;
     private String nazivStatusa;
 
     public StatusRada() {
     }
 
-    public StatusRada(Long statusID, String nazivStatusa) {
+    public StatusRada(Integer statusID, String nazivStatusa) {
         this.statusID = statusID;
         this.nazivStatusa = nazivStatusa;
     }
 
-    public Long getStatusID() {
+    public Integer getStatusID() {
         return statusID;
     }
 
-    public void setStatusID(Long statusID) {
+    public void setStatusID(Integer statusID) {
         this.statusID = statusID;
     }
 

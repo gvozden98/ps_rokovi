@@ -19,7 +19,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class IstorijaStatusaTableModel extends AbstractTableModel {
 
-    List<IstorijaStatusaRada> svaIstorijaStatusaRada;
+    private List<IstorijaStatusaRada> svaIstorijaStatusaRada;
 
     String[] columns = {"RB", "Status rada", "Datum"};
 
@@ -72,6 +72,7 @@ public class IstorijaStatusaTableModel extends AbstractTableModel {
                 break;
             case 2:
                 isr.setDatum((LocalDateTime) aValue);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -92,6 +93,10 @@ public class IstorijaStatusaTableModel extends AbstractTableModel {
     public void obrisiRedIstorijeStatusaRada(int rowIndex) {
         svaIstorijaStatusaRada.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+    public List<IstorijaStatusaRada> getSvaIstorijaStatusaRada() {
+        return svaIstorijaStatusaRada;
     }
 
 }

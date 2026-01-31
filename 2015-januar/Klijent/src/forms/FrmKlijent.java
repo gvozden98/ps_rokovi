@@ -197,6 +197,8 @@ public class FrmKlijent extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
+            UIController.getInstance().sacuvajRadIIstorijuStatusaRada(r, modelIstorije.getSvaIstorijaStatusaRada());
+            JOptionPane.showMessageDialog(this, "Rad je uspesno sacuvan!");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
