@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
         FrmKlijent fk = new FrmKlijent();
         fk.setVisible(true);
+        fk.setLocationRelativeTo(null);
 
     }
 }

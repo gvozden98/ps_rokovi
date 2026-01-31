@@ -46,4 +46,8 @@ public class ServerController {
         so.execute(null);
         return so.getStatusiRada();
     }
+
+    public void setRad() {
+        SetRadSO so = new SetRadSO();
+    }
 }

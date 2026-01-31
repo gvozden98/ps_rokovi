@@ -9,6 +9,7 @@ import domen.StatusRada;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -22,8 +23,8 @@ public class IstorijaStatusaTableModel extends AbstractTableModel {
 
     String[] columns = {"RB", "Status rada", "Datum"};
 
-    public IstorijaStatusaTableModel(List<IstorijaStatusaRada> svaIstorijaStatusaRada) {
-        this.svaIstorijaStatusaRada = svaIstorijaStatusaRada;
+    public IstorijaStatusaTableModel() {
+        this.svaIstorijaStatusaRada = new LinkedList<>();
     }
 
     @Override
@@ -75,6 +76,22 @@ public class IstorijaStatusaTableModel extends AbstractTableModel {
                 throw new AssertionError();
         }
         fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    public void dodajUListu(IstorijaStatusaRada isr) {
+        if (isr == null) {
+            return;
+        }
+
+        isr.setRb(svaIstorijaStatusaRada.size() + 1);
+        int row = svaIstorijaStatusaRada.size();
+        svaIstorijaStatusaRada.add(isr);
+        fireTableRowsInserted(row, row);
+    }
+
+    public void obrisiRedIstorijeStatusaRada(int rowIndex) {
+        svaIstorijaStatusaRada.remove(rowIndex);
+        fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
 }

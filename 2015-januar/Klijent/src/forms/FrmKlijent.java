@@ -11,11 +11,13 @@ import domen.Profesor;
 import domen.Rad;
 import domen.StatusRada;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 
 import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import models.IstorijaStatusaTableModel;
 
 /**
  *
@@ -24,16 +26,18 @@ import javax.swing.JOptionPane;
 public class FrmKlijent extends javax.swing.JFrame {
 
     private StatusRada sr;
-    private List<IstorijaStatusaRada> statusiRada;
     private Rad r;
+    private IstorijaStatusaTableModel modelIstorije;
 
     /**
+     *
      * Creates new form FrmKlijent
      */
     public FrmKlijent() {
         initComponents();
         popuniCBProfesor();
         popuniCBStudent();
+        fillTableModel();
     }
 
     /**
@@ -92,8 +96,18 @@ public class FrmKlijent extends javax.swing.JFrame {
         });
 
         jButton2.setText("Obrisi status rada");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Sacuvaj rad");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,6 +173,7 @@ public class FrmKlijent extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         DodajStatusRada dsr = new DodajStatusRada(this, true);
+        dsr.setVisible(true);
         if (dsr.getSr() != null) {
             sr = dsr.getSr();
             Student s = (Student) jComboBox1.getSelectedItem();
@@ -169,9 +184,25 @@ public class FrmKlijent extends javax.swing.JFrame {
             isr.setDatum(LocalDateTime.now());
             isr.setStatusRada(sr);
             isr.setRad(r);
+            modelIstorije.dodajUListu(isr);
+
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int rowToDelete = jTable1.getSelectedRow();
+        modelIstorije.obrisiRedIstorijeStatusaRada(rowToDelete);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,5 +286,10 @@ public class FrmKlijent extends javax.swing.JFrame {
 
         Rad r = new Rad(tema, s, p);
 
+    }
+
+    public void fillTableModel() {
+        modelIstorije = new IstorijaStatusaTableModel();
+        jTable1.setModel(modelIstorije);
     }
 }

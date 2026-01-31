@@ -16,6 +16,7 @@ public class Main {
     public static void main(String[] args) {
         FrmServer frmServer = new FrmServer();
         frmServer.setVisible(true);
+        frmServer.setLocationRelativeTo(null);
         try {
             Server server = new Server();
             server.startServer();

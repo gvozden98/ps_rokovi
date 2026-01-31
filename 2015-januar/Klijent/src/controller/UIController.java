@@ -4,7 +4,9 @@
  */
 package controller;
 
+import domen.IstorijaStatusaRada;
 import domen.Profesor;
+import domen.Rad;
 import domen.StatusRada;
 import java.net.Socket;
 import komunikacija.Receiver;
@@ -14,6 +16,7 @@ import java.util.List;
 import komunikacija.Operacija;
 import komunikacija.Request;
 import komunikacija.Response;
+import komunikacija.SacuvajRadRequest;
 
 /**
  *
@@ -71,6 +74,16 @@ public class UIController {
             throw response.getException();
         }
         return (List<StatusRada>) response.getResult();
+    }
+
+    public void sacuvajRadIIstorijuStatusaRada(Rad r, List<IstorijaStatusaRada> svaIstorijaStatusa) throws Exception {
+        SacuvajRadRequest dto = new SacuvajRadRequest(r, svaIstorijaStatusa);
+        Request request = new Request(dto, Operacija.SacuvajRad);
+        sender.send(request);
+        Response response = (Response) receiver.receive();
+        if (response.getException() != null) {
+            throw response.getException();
+        }
     }
 
 }

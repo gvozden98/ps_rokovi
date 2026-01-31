@@ -50,6 +50,8 @@ public class ClientThread extends Thread {
                         case GetAllStatusiRada:
                             response.setResult(ServerController.getInstance().getStatusiRada());
                             break;
+                        case SacuvajRad:
+                            ServerController.getInstance().setRad();
                         default:
                             throw new AssertionError("N/A");
                     }

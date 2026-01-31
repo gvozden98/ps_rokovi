@@ -9,5 +9,5 @@ package komunikacija;
  * @author Ognjen
  */
 public enum Operacija {
-    GetALLStudenti, GetALLProfesori, GetAllStatusiRada,
+    GetALLStudenti, GetALLProfesori, GetAllStatusiRada, SacuvajRad,
 }
