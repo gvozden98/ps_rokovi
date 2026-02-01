@@ -4,6 +4,9 @@
  */
 package main;
 
+import forms.ServerForma;
+import server.Server;
+
 /**
  *
  * @author Ognjen
@@ -11,6 +14,10 @@ package main;
 public class Main {
 
     public static void main(String[] args) {
-
+        Server server = new Server();
+        server.startServer();
+        ServerForma forma = new ServerForma();
+        forma.setVisible(true);
+        forma.setLocationRelativeTo(null);
     }
 }

@@ -9,5 +9,5 @@ package komunikacija;
  * @author Ognjen
  */
 public enum Operacija {
-
+    GET_ALL_DIZAJNERI
 }
