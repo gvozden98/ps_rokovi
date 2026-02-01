@@ -6,7 +6,10 @@ package controller;
 
 import domen.Student;
 import java.util.List;
+import komunikacija.PregledRadovaKriterijum;
+import komunikacija.PrikazRadovaDTO;
 import komunikacija.SacuvajRadRequest;
+import so.GetPrikazRadovaSO;
 import so.GetProfesoriSO;
 import so.GetStatusiRadaSO;
 import so.GetStudentiSO;
@@ -52,5 +55,11 @@ public class ServerController {
     public void setRad(SacuvajRadRequest srr) throws Exception {
         SetRadSO so = new SetRadSO();
         so.execute(srr);
+    }
+
+    public List<PrikazRadovaDTO> ucitajPregledRadova(PregledRadovaKriterijum k) throws Exception {
+        GetPrikazRadovaSO so = new GetPrikazRadovaSO();
+        so.execute(k);
+        return so.getPrikazRadova();
     }
 }

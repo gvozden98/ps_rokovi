@@ -5,6 +5,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.crypto.AEADBadTagException;
 import javax.swing.table.AbstractTableModel;
@@ -19,7 +20,11 @@ public class RadoviStatusiTableModel extends AbstractTableModel {
     List<PrikazRadovaDTO> radovi = new ArrayList<>();
     String[] columns = {"Profesor", "Student", "Broj Indeksa", "Godina upisa", "Status rada"};
 
-    public RadoviStatusiTableModel(List<PrikazRadovaDTO> radovi) {
+    public RadoviStatusiTableModel() {
+
+    }
+
+    public void setData(List<PrikazRadovaDTO> radovi) {
         this.radovi = radovi;
         fireTableDataChanged();
     }
@@ -37,19 +42,23 @@ public class RadoviStatusiTableModel extends AbstractTableModel {
         return columns.length;
     }
 
+    public String getColumnName(int column) {
+        return columns[column];
+    }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         PrikazRadovaDTO rad = radovi.get(rowIndex);
         return switch (columnIndex) {
-            case 1 ->
+            case 0 ->
                 rad.getImeProfesora();
-            case 2 ->
+            case 1 ->
                 rad.getImeStudenta();
-            case 3 ->
+            case 2 ->
                 rad.getBrojIndeksa();
-            case 4 ->
+            case 3 ->
                 rad.getGodinaUpisa();
-            case 5 ->
+            case 4 ->
                 rad.getStatusRada();
             default ->
                 null;
@@ -60,19 +69,19 @@ public class RadoviStatusiTableModel extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         PrikazRadovaDTO rad = radovi.get(rowIndex);
         switch (columnIndex) {
-            case 1:
+            case 0:
                 rad.setImeProfesora((String) aValue);
                 break;
-            case 2:
+            case 1:
                 rad.setImeStudenta((String) aValue);
                 break;
-            case 3:
+            case 2:
                 rad.setBrojIndeksa((String) aValue);
                 break;
-            case 4:
+            case 3:
                 rad.setGodinaUpisa((Integer) aValue);
                 break;
-            case 5:
+            case 4:
                 rad.setStatusRada((String) aValue);
                 break;
             default:

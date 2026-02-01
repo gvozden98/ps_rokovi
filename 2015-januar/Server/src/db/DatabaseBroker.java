@@ -10,8 +10,11 @@ import domen.Rad;
 import domen.StatusRada;
 import domen.Student;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import komunikacija.PregledRadovaKriterijum;
+import komunikacija.PrikazRadovaDTO;
 
 /**
  *
@@ -105,6 +108,58 @@ public class DatabaseBroker {
             ps.executeUpdate();
         }
 
+    }
+
+    public List<PrikazRadovaDTO> getPrikazRadova(PregledRadovaKriterijum k) throws Exception {
+        List<PrikazRadovaDTO> prikazRadova = new LinkedList<>();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("""
+                     SELECT p.Ime AS Profesor, s.Ime AS Student, s.BrojIndeksa, s.GodinaUpisa, sr.NazivStatusa
+                     FROM rad r JOIN student s ON s.StudentID=r.StudentID
+                      JOIN profesor p ON r.ProfesorID=p.ProfesorID
+                      JOIN istorijastatusarada isr ON r.RadID=isr.RadID
+                      JOIN statusrada sr ON isr.StatusRadaID=sr.StatusID
+                      JOIN (SELECT RadID,MAX(Datum) AS maxDat FROM istorijastatusarada isr GROUP BY RadID) poslednji
+                      ON poslednji.RadID=isr.RadID AND poslednji.maxDat=isr.Datum WHERE 1=1
+                     """);
+
+        boolean godinaUpisa = false;
+        boolean statusRada = false;
+        int i = 1;
+        if (k != null && k.getGodinaUpisa() != null) {
+            sql.append(" AND s.godinaUpisa = ? ");
+            godinaUpisa = true;
+        }
+        if (k != null && k.getStatusRada() != null) {
+            sql.append(" AND sr.statusID = ? ");
+            statusRada = true;
+        }
+
+        sql.append("ORDER BY s.GodinaUpisa ASC, isr.Datum ASC");
+
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql.toString())) {
+
+            if (godinaUpisa) {
+                ps.setInt(i, k.getGodinaUpisa());
+                i++;
+            }
+            if (statusRada) {
+                ps.setString(i, k.getStatusRada());
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                PrikazRadovaDTO prikaz = new PrikazRadovaDTO();
+                prikaz.setImeProfesora(rs.getString("Profesor"));
+                prikaz.setImeStudenta(rs.getString("Student"));
+                prikaz.setBrojIndeksa(rs.getString("BrojIndeksa"));
+                prikaz.setGodinaUpisa(rs.getInt("GodinaUpisa"));
+                prikaz.setStatusRada(rs.getString("NazivStatusa"));
+                prikazRadova.add(prikaz);
+            }
+        }
+        return prikazRadova;
     }
 
 }

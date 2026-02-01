@@ -20,6 +20,9 @@ public class PrikazRadovaDTO {
     private int godinaUpisa;
     private String statusRada;
 
+    public PrikazRadovaDTO() {
+    }
+
     public PrikazRadovaDTO(String imeProfesora, String imeStudenta, String brojIndeksa, int godinaUpisa, String statusRada) {
         this.imeProfesora = imeProfesora;
         this.imeStudenta = imeStudenta;
@@ -67,6 +70,5 @@ public class PrikazRadovaDTO {
     public void setGodinaUpisa(int godinaUpisa) {
         this.godinaUpisa = godinaUpisa;
     }
-    
-     
+
 }

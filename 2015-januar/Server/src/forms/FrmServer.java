@@ -4,6 +4,10 @@
  */
 package forms;
 
+import com.mysql.cj.util.StringUtils;
+import java.util.concurrent.atomic.AtomicReference;
+import komunikacija.PregledRadovaKriterijum;
+import models.RadoviStatusiTableModel;
 import thread.ServerThread;
 
 /**
@@ -12,12 +16,17 @@ import thread.ServerThread;
  */
 public class FrmServer extends javax.swing.JFrame {
 
+    private RadoviStatusiTableModel tableModel = new RadoviStatusiTableModel();
+
+    private final AtomicReference<PregledRadovaKriterijum> kriterijumRef
+            = new AtomicReference<>(new PregledRadovaKriterijum(null, null));
+
     /**
      * Creates new form FrmServer
      */
     public FrmServer() {
         initComponents();
-
+        fillTable();
     }
 
     /**
@@ -44,6 +53,11 @@ public class FrmServer extends javax.swing.JFrame {
         jLabel2.setText("Status rada:");
 
         jButton1.setText("Filtriraj");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -101,6 +115,10 @@ public class FrmServer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        primeniFilter();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -146,9 +164,27 @@ public class FrmServer extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
     public void fillTable() {
-        while (true) {
-            ServerThread st = new ServerThread();
-            st.start(this);
+        jTable1.setModel(tableModel);
+        ServerThread sr = new ServerThread(tableModel, kriterijumRef);
+        sr.start();
+    }
+
+    public void primeniFilter() {
+        String godinaTxt = jTextField1.getText().trim();
+        String statusTxt = jTextField2.getText().trim();
+
+        Integer godinaUpisa = null;
+        if (!godinaTxt.isEmpty()) {
+            try {
+                godinaUpisa = Integer.valueOf(godinaTxt);
+            } catch (NumberFormatException e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Godina upisa mora biti broj!");
+                return;
+            }
         }
+
+        String statusRada = statusTxt.isEmpty() ? null : statusTxt;
+
+        kriterijumRef.set(new PregledRadovaKriterijum(godinaUpisa, statusRada));
     }
 }
