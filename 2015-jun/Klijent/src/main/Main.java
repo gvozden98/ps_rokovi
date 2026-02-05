@@ -4,6 +4,8 @@
  */
 package main;
 
+import forms.GlavnaForma;
+
 /**
  *
  * @author Ognjen
@@ -11,6 +13,8 @@ package main;
 public class Main {
 
     public static void main(String[] args) {
-
+        GlavnaForma forma = new GlavnaForma();
+        forma.setVisible(true);
+        forma.setLocationRelativeTo(null);
     }
 }

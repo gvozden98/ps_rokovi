@@ -4,11 +4,13 @@
  */
 package domen;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Ognjen
  */
-public class Angazovanje {
+public class Angazovanje implements Serializable {
 
     private int angazovanjeID;
     private int brojSati;
@@ -67,6 +69,10 @@ public class Angazovanje {
     public void setModel(Model model) {
         this.model = model;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Angazovanje{" + "angazovanjeID=" + angazovanjeID + ", brojSati=" + brojSati + ", zarada=" + zarada + ", komentar=" + komentar + ", modnaRevija=" + modnaRevija + ", model=" + model + '}';
+    }
+
 }

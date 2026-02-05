@@ -4,7 +4,16 @@
  */
 package forms;
 
+import domen.Angazovanje;
 import domen.Dizajner;
+import domen.ModnaRevija;
+import dto.ModnaRevijaAngazovanjeDTO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.JOptionPane;
+import models.ClientTableModel;
+import uicontroller.Controller;
 
 /**
  *
@@ -15,8 +24,15 @@ public class GlavnaForma extends javax.swing.JFrame {
     /**
      * Creates new form GlavnaForma
      */
+    ClientTableModel clientTableModel;
+    ModnaRevija mr;
+
     public GlavnaForma() {
         initComponents();
+        fillCbDizajneri();
+        mr = new ModnaRevija();
+        clientTableModel = new ClientTableModel();
+        jTable1.setModel(clientTableModel);
     }
 
     /**
@@ -52,23 +68,38 @@ public class GlavnaForma extends javax.swing.JFrame {
         jLabel3.setText("Dizajner:");
 
         jButton1.setText("Dodaj angazovanje");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Ukloni angazovanje");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
         jButton3.setText("Sacuvaj modnu reviju");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,6 +175,52 @@ public class GlavnaForma extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            mr.setDizajner((Dizajner) jComboBox1.getSelectedItem());
+            mr.setNaziv(jTextField1.getText());
+            try {
+                String datumOdrzavanjaStr = jTextField2.getText();
+                LocalDate datum = LocalDate.parse(datumOdrzavanjaStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+                mr.setDatumOdrzavanja(datum);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Pogresno unesen datum!", "Greska", JOptionPane.ERROR_MESSAGE);
+
+            }
+
+            try {
+                AngazovanjeForma af = new AngazovanjeForma(this, true, mr);
+                af.setVisible(true);
+                clientTableModel.addAngazovanje(af.getAngazovanje());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+        for (Angazovanje angazovanje : clientTableModel.getAngazovanja()) {
+            System.out.println(angazovanje);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int rowDelete = jTable1.getSelectedRow();
+        clientTableModel.removeAngazovanjeAtIndex(rowDelete);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            ModnaRevijaAngazovanjeDTO madto = new ModnaRevijaAngazovanjeDTO();
+            madto.setModnaRevija(mr);
+            madto.setA(clientTableModel.getAngazovanja());
+            Controller.getInstance().dodajAngazovanjaIModnuReviju(madto);
+            JOptionPane.showMessageDialog(this, "Angazovanja uspesno dodata!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -193,4 +270,15 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    public void fillCbDizajneri() {
+        try {
+            List<Dizajner> dizajneri = Controller.getInstance().getAllDizajneri();
+            for (Dizajner dizajner : dizajneri) {
+                jComboBox1.addItem(dizajner);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

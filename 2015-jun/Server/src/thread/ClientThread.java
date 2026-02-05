@@ -4,6 +4,7 @@
  */
 package thread;
 
+import controller.ServerController;
 import java.net.Socket;
 import komunikacija.Receiver;
 import komunikacija.Request;
@@ -38,7 +39,14 @@ public class ClientThread extends Thread {
                 try {
                     switch (request.getOperacija()) {
                         case GET_ALL_DIZAJNERI:
-
+                            response.setResult(ServerController.getInstance().getSviDizajneri());
+                            break;
+                        case GET_ALL_MODELI:
+                            response.setResult(ServerController.getInstance().getSviModeli());
+                            break;
+                        case PUT_ANGAZOVANJA:
+                            ServerController.getInstance().putSvaAngazovanja(request.getArgument());
+                            response.setResult("1");
                             break;
                         default:
                             throw new AssertionError("N/A");

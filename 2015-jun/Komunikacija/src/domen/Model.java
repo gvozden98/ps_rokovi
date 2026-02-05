@@ -4,13 +4,14 @@
  */
 package domen;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author Ognjen
  */
-public class Model {
+public class Model implements Serializable {
 
     private int modelID;
     private String ime;
@@ -51,7 +52,10 @@ public class Model {
     public void setDatumRodjenja(LocalDateTime datumRodjenja) {
         this.datumRodjenja = datumRodjenja;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return ime + " " + prezime;
+    }
 
 }

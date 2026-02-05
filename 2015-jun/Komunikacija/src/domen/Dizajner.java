@@ -4,11 +4,13 @@
  */
 package domen;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Ognjen
  */
-public class Dizajner {
+public class Dizajner implements Serializable {
 
     private int dizajnerID;
     private String ime;
@@ -46,5 +48,10 @@ public class Dizajner {
     public void setPrezime(String prezime) {
         this.prezime = prezime;
     }
-    
+
+    @Override
+    public String toString() {
+        return ime + " " + prezime;
+    }
+
 }

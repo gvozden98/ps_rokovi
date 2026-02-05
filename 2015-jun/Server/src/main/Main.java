@@ -14,10 +14,11 @@ import server.Server;
 public class Main {
 
     public static void main(String[] args) {
-        Server server = new Server();
-        server.startServer();
         ServerForma forma = new ServerForma();
         forma.setVisible(true);
         forma.setLocationRelativeTo(null);
+        Server server = new Server();
+        server.startServer();
+
     }
 }

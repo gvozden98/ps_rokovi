@@ -4,11 +4,14 @@
  */
 package komunikacija;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Ognjen
  */
-public class Response {
+public class Response implements Serializable {
+
     private Object result;
     private Exception exception;
 
@@ -35,6 +38,5 @@ public class Response {
     public void setResult(Object result) {
         this.result = result;
     }
-    
-    
+
 }

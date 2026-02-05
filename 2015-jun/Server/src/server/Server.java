@@ -15,7 +15,7 @@ import thread.ClientThread;
 public class Server {
 
     ServerSocket serverSocket;
-    private volatile boolean running = true;
+    private volatile boolean running;
 
     public void startServer() {
         running = true;

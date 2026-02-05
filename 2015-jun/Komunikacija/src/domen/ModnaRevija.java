@@ -4,17 +4,19 @@
  */
 package domen;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author Ognjen
  */
-public class ModnaRevija {
+public class ModnaRevija implements Serializable {
 
     private int modnaRevijaID;
     private String naziv;
-    private LocalDateTime datumOdrzavanja;
+    private LocalDate datumOdrzavanja;
     private Dizajner dizajner;
 
     public ModnaRevija() {
@@ -36,11 +38,11 @@ public class ModnaRevija {
         this.naziv = naziv;
     }
 
-    public LocalDateTime getDatumOdrzavanja() {
+    public LocalDate getDatumOdrzavanja() {
         return datumOdrzavanja;
     }
 
-    public void setDatumOdrzavanja(LocalDateTime datumOdrzavanja) {
+    public void setDatumOdrzavanja(LocalDate datumOdrzavanja) {
         this.datumOdrzavanja = datumOdrzavanja;
     }
 
@@ -51,6 +53,17 @@ public class ModnaRevija {
     public void setDizajner(Dizajner dizajner) {
         this.dizajner = dizajner;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ModnaRevija{");
+        sb.append("modnaRevijaID=").append(modnaRevijaID);
+        sb.append(", naziv=").append(naziv);
+        sb.append(", datumOdrzavanja=").append(datumOdrzavanja);
+        sb.append(", dizajner=").append(dizajner);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }
