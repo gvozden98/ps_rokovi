@@ -212,7 +212,7 @@ public class GlavnaForma extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             ModnaRevijaAngazovanjeDTO madto = new ModnaRevijaAngazovanjeDTO();
-            madto.setModnaRevija(mr);
+            madto.setModnaRevija(getModnaRevija());
             madto.setA(clientTableModel.getAngazovanja());
             Controller.getInstance().dodajAngazovanjaIModnuReviju(madto);
             JOptionPane.showMessageDialog(this, "Angazovanja uspesno dodata!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
@@ -280,5 +280,11 @@ public class GlavnaForma extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private ModnaRevija getModnaRevija() {
+        mr.setDizajner((Dizajner) jComboBox1.getSelectedItem());
+        mr.setNaziv(jTextField1.getText());
+        return mr;
     }
 }

@@ -7,7 +7,9 @@ package controller;
 import domen.Angazovanje;
 import domen.Dizajner;
 import domen.Model;
+import dto.AngazovaniModeliDTO;
 import java.util.List;
+import so.GetAngazovaniModeliSO;
 import so.GetSviDizajeriSO;
 import so.GetSviModeliSO;
 import so.PutSvaAngazovanjaSO;
@@ -46,6 +48,12 @@ public class ServerController {
     public void putSvaAngazovanja(Object argument) throws Exception {
         PutSvaAngazovanjaSO so = new PutSvaAngazovanjaSO();
         so.execute(argument);
+    }
+
+    public List<AngazovaniModeliDTO> getAngazovaniModeli() throws Exception {
+        GetAngazovaniModeliSO so = new GetAngazovaniModeliSO();
+        so.execute(null);
+        return so.getAngazovaniModeli();
     }
 
 }

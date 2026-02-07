@@ -16,6 +16,9 @@ public class PutSvaAngazovanjaSO extends AbstractSO {
 
     @Override
     public void validate(Object object) throws Exception {
+        ModnaRevijaAngazovanjeDTO madto = (ModnaRevijaAngazovanjeDTO) object;
+        dbbr.proveriDizajnera(madto.getModnaRevija());
+        dbbr.proveriModele(madto.getA());
     }
 
     @Override

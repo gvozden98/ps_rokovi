@@ -14,6 +14,7 @@ import server.Server;
 public class Main {
 
     public static void main(String[] args) {
+
         ServerForma forma = new ServerForma();
         forma.setVisible(true);
         forma.setLocationRelativeTo(null);
