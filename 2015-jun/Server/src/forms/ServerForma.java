@@ -4,6 +4,8 @@
  */
 package forms;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import models.ServerTableModel;
 import thread.ServerThread;
 
@@ -16,9 +18,29 @@ public class ServerForma extends javax.swing.JFrame {
     /**
      * Creates new form ServerForma
      */
+    AtomicReference<String> filter = new AtomicReference<>(new String(""));
+
+    private AtomicBoolean checked = new AtomicBoolean(false);
+
     public ServerForma() {
         initComponents();
         fillServerTable();
+
+        // Checkbox: uključi/isključi filter
+        jCheckBox1.addActionListener(e -> {
+            if (jCheckBox1.isSelected()) {
+                filter.set(jTextField1.getText().trim());
+            } else {
+                filter.set("");
+            }
+        });
+
+        // TextField: filter se menja kad korisnik pritisne Enter
+        jTextField1.addActionListener(e -> {
+            if (jCheckBox1.isSelected()) {
+                filter.set(jTextField1.getText().trim());
+            }
+        });
     }
 
     /**
@@ -41,6 +63,11 @@ public class ServerForma extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Prikaz angazovanja"));
 
         jCheckBox1.setText("Godina");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,6 +135,10 @@ public class ServerForma extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -154,7 +185,8 @@ public class ServerForma extends javax.swing.JFrame {
         try {
             ServerTableModel model = new ServerTableModel();
             jTable1.setModel(model);
-            ServerThread serverThread = new ServerThread(model);
+
+            ServerThread serverThread = new ServerThread(model, jCheckBox1.isSelected(), filter);
             serverThread.startit();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -162,4 +194,18 @@ public class ServerForma extends javax.swing.JFrame {
         }
 
     }
+
+    public boolean isChecked() {
+        return checked.get();
+    }
+
+    public void setChecked(boolean checkedVal) {
+        checked.set(checkedVal);
+        if (checkedVal == true) {
+            filter.set(jTextField1.getText());
+        } else {
+            filter.set("");
+        }
+    }
+
 }

@@ -50,9 +50,9 @@ public class ServerController {
         so.execute(argument);
     }
 
-    public List<AngazovaniModeliDTO> getAngazovaniModeli() throws Exception {
+    public List<AngazovaniModeliDTO> getAngazovaniModeli(String filter) throws Exception {
         GetAngazovaniModeliSO so = new GetAngazovaniModeliSO();
-        so.execute(null);
+        so.execute(filter);
         return so.getAngazovaniModeli();
     }
 

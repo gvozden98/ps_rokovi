@@ -125,17 +125,32 @@ public class DatabaseBroker {
 
     }
 
-    public List<AngazovaniModeliDTO> getAngazovaniModeli() throws Exception {
+    public List<AngazovaniModeliDTO> getAngazovaniModeli(String filter) throws Exception {
         List<AngazovaniModeliDTO> angazovani = new ArrayList<>();
-        String sql = """
-                     SELECT CONCAT(m.Ime,' ',m.Prezime) AS "Model", COUNT(mr.ModnaRevijaID) AS "Broj revija",
-                      SUM(a.Zarada) AS "Ukupna zarada", SUM(a.BrojSati) AS "Ukupan broj Sati"
-                     FROM angazovanje a
-                     INNER JOIN modnarevija mr ON a.ModnaRevijaID=mr.ModnaRevijaID
-                     INNER JOIN model m ON a.ModelID=m.ModelID GROUP BY m.ModelID;
-                     """;
-        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql)) {
+        StringBuilder sql = new StringBuilder("""
+        SELECT CONCAT(m.Ime,' ',m.Prezime) AS `Model`,
+               COUNT(DISTINCT mr.ModnaRevijaID) AS `Broj Revija`,
+               SUM(a.Zarada) AS `Ukupna Zarada`,
+               SUM(a.BrojSati) AS `Ukupan Broj Sati`
+        FROM angazovanje a
+        INNER JOIN modnarevija mr ON a.ModnaRevijaID = mr.ModnaRevijaID
+        INNER JOIN model m ON a.ModelID = m.ModelID
+        """);
+        boolean hasFilter = filter != null && !filter.isBlank();
+        if (hasFilter) {
+            sql.append(" WHERE YEAR(mr.DatumOdrzavanja) = ? ");
+        }
+
+        sql.append(" GROUP BY m.ModelID ");
+        sql.append(" ORDER BY `Broj Revija` ASC, `Ukupna zarada` DESC ");
+        try (PreparedStatement ps = DatabaseConnection.getInstance().getConnection().prepareStatement(sql.toString())) {
+
+            if (hasFilter) {
+                ps.setString(1, filter); // npr "1998"
+            }
+
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 AngazovaniModeliDTO amdto = new AngazovaniModeliDTO();
                 amdto.setModel(rs.getString("Model"));

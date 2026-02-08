@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import models.ServerTableModel;
 
@@ -21,24 +24,36 @@ public class ServerThread extends Thread {
 
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final ServerTableModel serverTableModel;
+    private AtomicReference<String> filter;
 
-    public ServerThread(ServerTableModel serverTableModel) {
+    public ServerThread(ServerTableModel serverTableModel, boolean selected, AtomicReference<String> filter) {
         this.serverTableModel = serverTableModel;
+        this.filter = filter;
     }
 
-    public void startit() throws Exception {
+    public void startit() {
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                List<AngazovaniModeliDTO> aModeli = ServerController.getInstance().getAngazovaniModeli();
-                SwingUtilities.invokeLater(() -> {
-                    serverTableModel.setAngModeli(aModeli);
-                });
+                String yearText = filter.get();
+                Integer year = null;
+
+                if (yearText != null && !yearText.isBlank()) {
+                    try {
+                        year = Integer.parseInt(yearText.trim());
+                    } catch (NumberFormatException ex) {
+                        year = null; // nevalidno -> nema filtera (ili možeš prikazati poruku)
+                    }
+                }
+
+                List<AngazovaniModeliDTO> aModeli
+                        = ServerController.getInstance().getAngazovaniModeli(yearText);
+
+                SwingUtilities.invokeLater(() -> serverTableModel.setAngModeli(aModeli));
+
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }, 0, 10, TimeUnit.SECONDS);
-
     }
 
 }

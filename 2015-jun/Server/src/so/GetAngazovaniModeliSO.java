@@ -21,7 +21,7 @@ public class GetAngazovaniModeliSO extends AbstractSO {
 
     @Override
     public void executeOperation(Object object) throws Exception {
-        AngazovaniModeli = dbbr.getAngazovaniModeli();
+        AngazovaniModeli = dbbr.getAngazovaniModeli((String) object);
     }
 
     public List<AngazovaniModeliDTO> getAngazovaniModeli() {
