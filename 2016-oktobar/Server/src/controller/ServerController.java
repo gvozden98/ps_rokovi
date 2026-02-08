@@ -1,0 +1,24 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package controller;
+
+/**
+ *
+ * @author Ognjen
+ */
+public class ServerController {
+
+    private static ServerController instance;
+
+    public ServerController() {
+    }
+
+    private static ServerController getInstance() {
+        if (instance == null) {
+            instance = new ServerController();
+        }
+        return instance;
+    }
+}
