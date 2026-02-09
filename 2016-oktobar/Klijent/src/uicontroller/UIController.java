@@ -4,8 +4,11 @@
  */
 package uicontroller;
 
+import domen.Fakultet;
 import domen.Kandidat;
+import domen.StudijskiProgram;
 import java.net.Socket;
+import java.util.List;
 import komunikacija.Operacije;
 import komunikacija.Receiver;
 import komunikacija.Request;
@@ -42,12 +45,33 @@ public class UIController {
         return instance;
     }
 
-    public void login(Kandidat k) throws Exception {
+    public Kandidat login(Kandidat k) throws Exception {
         Request request = new Request(Operacije.LOGIN, k);
         sender.send(request);
         Response response = (Response) receiver.receive();
         if (response.getException() != null) {
             throw response.getException();
         }
+        return (Kandidat) response.getResult();
+    }
+
+    public List<StudijskiProgram> getStudijskiProgrami() throws Exception {
+        Request request = new Request(Operacije.GET_STUD_PROGRAM, new StudijskiProgram());
+        sender.send(request);
+        Response response = (Response) receiver.receive();
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+        return (List<StudijskiProgram>) response.getResult();
+    }
+
+    public List<Fakultet> getFakulteti() throws Exception {
+        Request request = new Request(Operacije.GET_FAKULTETI, new Fakultet());
+        sender.send(request);
+        Response response = (Response) receiver.receive();
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+        return (List<Fakultet>) response.getResult();
     }
 }

@@ -4,6 +4,9 @@
  */
 package thread;
 
+import controller.ServerController;
+import domen.Fakultet;
+import domen.Kandidat;
 import java.net.Socket;
 import komunikacija.Operacije;
 import komunikacija.Receiver;
@@ -39,6 +42,13 @@ public class ClientThread extends Thread {
                 try {
                     switch (request.getOperacija()) {
                         case LOGIN:
+                            response.setResult(ServerController.getInstance().loginKorisnik((Kandidat) request.getArgument()));
+                            break;
+                        case GET_FAKULTETI:
+                            response.setResult(ServerController.getInstance().getFakulteti());
+                            break;
+                        case GET_STUD_PROGRAM:
+                            response.setResult(ServerController.getInstance().getStudijskiProgrami());
 
                             break;
                         default:

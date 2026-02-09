@@ -90,7 +90,11 @@ public class LoginForma extends javax.swing.JFrame {
             Kandidat k = new Kandidat();
             k.setKorisnickoIme(korisnickoIme);
             k.setLozinka(password);
-            UIController.getInstance().login(k);
+            k = UIController.getInstance().login(k);
+
+            GlavnaForma glavnaForma = new GlavnaForma(k);
+            glavnaForma.setVisible(true);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }

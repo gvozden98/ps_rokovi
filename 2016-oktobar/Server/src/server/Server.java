@@ -17,7 +17,7 @@ public class Server {
     private volatile boolean running = false;
     private ServerSocket ss;
 
-    public void startServer() throws Exception {
+    public void startServer() {
         running = true;
         try {
             ss = new ServerSocket(9000);
@@ -25,6 +25,7 @@ public class Server {
 
             while (running) {
                 Socket clientSocket = ss.accept();
+                System.out.println("klijent konektovan!");
                 ClientThread clientThread = new ClientThread(clientSocket, this);
                 clientThread.run();
 

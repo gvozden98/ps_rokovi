@@ -4,7 +4,12 @@
  */
 package forme;
 
-import domen.*;
+import domen.Kandidat;
+import domen.Fakultet;
+import domen.Prijava;
+import domen.StudijskiProgram;
+import java.util.List;
+import uicontroller.UIController;
 
 /**
  *
@@ -12,11 +17,18 @@ import domen.*;
  */
 public class GlavnaForma extends javax.swing.JFrame {
 
+    Kandidat kandidat;
+
     /**
      * Creates new form GlavnaForma
      */
-    public GlavnaForma() {
+    public GlavnaForma(Kandidat kandidat) {
         initComponents();
+        this.kandidat = kandidat;
+        jLabel2.setText(kandidat.toString());
+        setLocationRelativeTo(null);
+        popuniCBFakulteti();
+        popuniCBStudProgrami();
     }
 
     /**
@@ -151,7 +163,7 @@ public class GlavnaForma extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GlavnaForma().setVisible(true);
+                new GlavnaForma(new Kandidat()).setVisible(true);
             }
         });
     }
@@ -171,4 +183,26 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    public void popuniCBFakulteti() {
+        try {
+            List<Fakultet> fakulteti = UIController.getInstance().getFakulteti();
+            for (Fakultet fakultet : fakulteti) {
+                jComboBox1.addItem(fakultet);
+            }
+        } catch (Exception e) {
+            System.out.println("Greska pri popunjavanju cb fakulteti!" + e.getMessage());
+        }
+    }
+
+    public void popuniCBStudProgrami() {
+        try {
+            List<StudijskiProgram> programi = UIController.getInstance().getStudijskiProgrami();
+            for (StudijskiProgram studijskiProgram : programi) {
+                jComboBox2.addItem(studijskiProgram);
+            }
+        } catch (Exception e) {
+            System.out.println("Greska pri popunjavanju cb stud prog!" + e.getMessage());
+        }
+    }
 }

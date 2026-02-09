@@ -15,8 +15,8 @@ public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection conn;
     private final String password = "";
-    private final String url = "jdbc:mysql://127.0.0.1:3306/2016-oktobar";
-    private String user;
+    private final String url = "jdbc:mysql://localhost:3306/2016-oktobar";
+    private String user = "root";
 
     public DatabaseConnection() throws Exception {
         try {
@@ -39,6 +39,5 @@ public class DatabaseConnection {
     public Connection getConn() {
         return conn;
     }
-
 
 }

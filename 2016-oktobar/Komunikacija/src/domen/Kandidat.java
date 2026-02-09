@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Ognjen
  */
-public class Kandidat implements Serializable{
+public class Kandidat implements Serializable {
 
     private int kandidatID;
     private String ime;
@@ -63,7 +63,7 @@ public class Kandidat implements Serializable{
 
     @Override
     public String toString() {
-        return korisnickoIme;
+        return ime + " " + prezime;
     }
 
 }

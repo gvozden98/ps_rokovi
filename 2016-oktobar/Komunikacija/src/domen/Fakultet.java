@@ -54,7 +54,7 @@ public class Fakultet implements Serializable {
 
     @Override
     public String toString() {
-        return "Fakultet{" + "fakultetID=" + fakultetID + ", naziv=" + naziv + ", adresa=" + adresa + ", telefon=" + telefon + '}';
+        return naziv;
     }
 
 }

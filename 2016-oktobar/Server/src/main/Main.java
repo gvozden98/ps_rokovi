@@ -5,6 +5,7 @@
 package main;
 
 import forme.ServerForma;
+import server.Server;
 
 /**
  *
@@ -13,8 +14,12 @@ import forme.ServerForma;
 public class Main {
 
     public static void main(String[] args) {
+
         ServerForma serverForma = new ServerForma();
         serverForma.setVisible(true);
         serverForma.setLocationRelativeTo(null);
+        Server server = new Server();
+        server.startServer();
+
     }
 }

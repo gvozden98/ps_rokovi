@@ -14,16 +14,16 @@ import java.sql.*;
  */
 public abstract class AbstractSO {
 
-    private DatabaseBroker dbbr;
+    protected DatabaseBroker dbbr;
 
-    public AbstractSO() throws Exception {
+    public AbstractSO() {
         dbbr = new DatabaseBroker();
     }
 
-    public void executeOperation(Object object) throws Exception {
+    public void execute(Object object) throws Exception {
         try {
             validate(object);
-            execute(object);
+            executeOperation(object);
             DatabaseConnection.getInstance().getConn().commit();
         } catch (Exception e) {
             DatabaseConnection.getInstance().getConn().rollback();
@@ -33,7 +33,7 @@ public abstract class AbstractSO {
         }
     }
 
-    public abstract void execute(Object object) throws Exception;
+    public abstract void executeOperation(Object object) throws Exception;
 
     public abstract void validate(Object object) throws Exception;
 

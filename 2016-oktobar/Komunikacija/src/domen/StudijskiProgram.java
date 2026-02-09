@@ -34,4 +34,9 @@ public class StudijskiProgram implements Serializable {
         this.naziv = naziv;
     }
 
+    @Override
+    public String toString() {
+        return naziv;
+    }
+
 }

@@ -9,5 +9,5 @@ package komunikacija;
  * @author Ognjen
  */
 public enum Operacije {
-    LOGIN
+    LOGIN, GET_FAKULTETI, GET_STUD_PROGRAM
 }
