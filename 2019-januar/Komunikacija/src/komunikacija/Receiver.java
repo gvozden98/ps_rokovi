@@ -4,10 +4,31 @@
  */
 package komunikacija;
 
+import java.io.ObjectInputStream;
+import java.net.Socket;
+
 /**
  *
  * @author Ognjen
  */
 public class Receiver {
+
+    Socket socket;
+
+    public Receiver() {
+    }
+
+    public Receiver(Socket socket) {
+        this.socket = socket;
+    }
+
+    public Object receive() throws Exception {
+        try {
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            return in.readObject();
+        } catch (Exception e) {
+            throw new Exception("Greska prilikom prijema objekta" + e.getMessage());
+        }
+    }
 
 }

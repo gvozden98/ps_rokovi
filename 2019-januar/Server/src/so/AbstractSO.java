@@ -9,5 +9,5 @@ package so;
  * @author Ognjen
  */
 public class AbstractSO {
-
+//ostalo
 }

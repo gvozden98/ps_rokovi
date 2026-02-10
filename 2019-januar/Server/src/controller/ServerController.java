@@ -4,10 +4,24 @@
  */
 package controller;
 
+import java.net.Socket;
+import komunikacija.Sender;
+
 /**
  *
  * @author Ognjen
  */
 public class ServerController {
 
+    private static ServerController instance;
+
+    private ServerController() {
+    }
+
+    public static ServerController getInstance() {
+        if (instance == null) {
+            instance = new ServerController();
+        }
+        return instance;
+    }
 }

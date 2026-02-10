@@ -4,6 +4,8 @@
  */
 package main;
 
+import form.KlijentForma;
+
 /**
  *
  * @author Ognjen
@@ -11,6 +13,10 @@ package main;
 public class Main {
 
     public static void main(String[] args) {
-
+        KlijentForma klijentForma = new KlijentForma();
+        klijentForma.setVisible(true);
+        klijentForma.setLocationRelativeTo(null);
+        klijentForma.setResizable(false);
+        klijentForma.setTitle("[FON] Klijent");
     }
 }

@@ -4,10 +4,39 @@
  */
 package komunikacija;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Ognjen
  */
-public class Request {
+public class Request implements Serializable {
+
+    private Operacije operacija;
+    private Object argument;
+
+    public Request(Operacije operacija, Object argument) {
+        this.operacija = operacija;
+        this.argument = argument;
+    }
+
+    public Request() {
+    }
+
+    public Operacije getOperacija() {
+        return operacija;
+    }
+
+    public void setOperacija(Operacije operacija) {
+        this.operacija = operacija;
+    }
+
+    public Object getArgument() {
+        return argument;
+    }
+
+    public void setArgument(Object argument) {
+        this.argument = argument;
+    }
 
 }
