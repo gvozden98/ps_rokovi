@@ -4,12 +4,18 @@
  */
 package thread;
 
+import controller.ServerController;
+import domen.ScorePayload;
+import domen.SledecePitanjeDTO;
 import java.net.Socket;
+import java.util.List;
+import komunikacija.Operacije;
 import static komunikacija.Operacije.LOGIN;
 import komunikacija.Receiver;
 import komunikacija.Request;
 import komunikacija.Response;
 import komunikacija.Sender;
+import server.Server;
 
 /**
  *
@@ -20,25 +26,55 @@ public class ClientThread extends Thread {
     Socket clientSocket;
     Receiver receiver;
     Sender sender;
+    Server server;
 
-    public ClientThread(Socket clientSocket) {
+    boolean loggedIn = false;
+
+    public ClientThread(Socket clientSocket, Server server) {
         this.clientSocket = clientSocket;
         this.receiver = new Receiver(clientSocket);
         this.sender = new Sender(clientSocket);
+        this.server = server;
     }
 
     @Override
     public void run() {
-        while (!isInterrupted() && !clientSocket.isClosed()) {
-            try {
+        try {
+            while (!isInterrupted() && !clientSocket.isClosed()) {
+
                 Request request = (Request) receiver.receive();
                 Response response = new Response();
                 try {
 
                     switch (request.getOperacija()) {
                         case LOGIN:
-                            //response.setResult();
+                            String korisnik = (String) request.getArgument();
+                            sender.send(response);
+                            loggedIn = true;
+                            server.onPlayerLoggedIn(this);
                             break;
+                        case ODGOVORI_NA_PITANJNE: {
+                            String answer = (String) request.getArgument();
+
+                            // 1) izračunaj poene (prvi klik pravilo je u session-u)
+                            ScorePayload score = ServerController.getInstance().submitTeamAnswer(answer);
+                            response.setResult(score);
+                            // 2) pošalji svima SCORE_UPDATE
+                            server.broadcast(response);
+
+                            // 3) pošalji sledeće pitanje ili kraj
+                            SledecePitanjeDTO next = ServerController.getInstance().sledecePitanje();
+                            if (next == null) {
+                                response.setResult(score);
+                                response.setException(new Exception("Gotov kviz!"));
+                                server.broadcast(response);
+                            } else {
+                                response.setResult(score);
+                                server.broadcast(response);
+                            }
+                        }
+
+                        break;
                         default:
                             throw new AssertionError("N/A");
                     }
@@ -46,13 +82,31 @@ public class ClientThread extends Thread {
                 } catch (Exception e) {
                     response.setException(e);
                     e.printStackTrace();
+                    System.out.println("Puce!");
                 }
-                sender.send(response);
-            } catch (Exception e) {
-                System.out.println("Greska u komunikaciji!" + e.getMessage());
-                break;
+
             }
+        } catch (Exception e) {
+            System.out.println("Greska u komunikaciji!" + e.getMessage());
+        } finally {
+            server.removeClient(this);
+            close();
         }
     }
 
+    public void send(Response res) {
+        try {
+            sender.send(res);
+        } catch (Exception e) {
+            // ako ne može da se pošalje, verovatno je klijent pukao
+            close();
+        }
+    }
+
+    public void close() {
+        try {
+            clientSocket.close();
+        } catch (Exception ignored) {
+        }
+    }
 }

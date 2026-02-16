@@ -4,10 +4,12 @@
  */
 package controller;
 
-import com.sun.net.httpserver.Request;
 import java.net.Socket;
+import komunikacija.Operacije;
 import komunikacija.Receiver;
 import komunikacija.Sender;
+import komunikacija.Request;
+import komunikacija.Response;
 
 /**
  *
@@ -38,4 +40,14 @@ public class Controller {
         }
         return instance;
     }
+
+    public void login(String igrac) throws Exception {
+        Request request = new Request(Operacije.LOGIN, igrac);
+        sender.send(request);
+        Response response = (Response) receiver.receive();
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+    }
+
 }

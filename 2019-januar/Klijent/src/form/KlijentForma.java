@@ -4,17 +4,28 @@
  */
 package form;
 
+import controller.Controller;
+import java.util.EventListener;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Ognjen
  */
 public class KlijentForma extends javax.swing.JFrame {
 
+    boolean start = false;
+
     /**
      * Creates new form KlijentForma
      */
     public KlijentForma() {
         initComponents();
+        jTextField2.setEnabled(false);
+        jTextField4.setEnabled(false);
+        jTextField5.setEnabled(false);
+        blockUI();
     }
 
     /**
@@ -48,6 +59,11 @@ public class KlijentForma extends javax.swing.JFrame {
         jLabel1.setText("Koirsnicko ime:");
 
         jButton1.setText("Prijavi se");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -165,6 +181,42 @@ public class KlijentForma extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Controller.getInstance().login(jTextField1.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+
+        start = false;
+        blockUI();
+        jButton1.setEnabled(false);
+
+        new Thread(() -> {
+            try {
+                while (true) {
+                    boolean ready = Controller.getInstance().canWeStart(); // blokira na socketu
+                    if (ready) {
+                        start = true;
+                        SwingUtilities.invokeLater(() -> {
+                            blockUI();                 // odblokira kviz
+                            jButton1.setEnabled(true); // opcionalno
+                        });
+                        break;
+                    }
+                    // ako server brzo vraća false, spusti spam:
+                    Thread.sleep(500);
+                }
+            } catch (Exception ex) {
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    jButton1.setEnabled(true);
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+                });
+            }
+        }).start();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -179,16 +231,24 @@ public class KlijentForma extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(KlijentForma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KlijentForma.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(KlijentForma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KlijentForma.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(KlijentForma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KlijentForma.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(KlijentForma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KlijentForma.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -216,4 +276,13 @@ public class KlijentForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
+    public void blockUI() {
+        if (start) {
+            jTextField3.setEnabled(true);
+            jButton2.setEnabled(true);
+        } else {
+            jTextField3.setEnabled(false);
+            jButton2.setEnabled(false);
+        }
+    }
 }
