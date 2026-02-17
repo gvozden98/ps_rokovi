@@ -28,7 +28,6 @@ public class KlijentForma extends javax.swing.JFrame {
         initComponents();
         table = new PorukaTableModel();
         jTable1.setModel(table);
-        configureCloseBehavior();
     }
 
     /**
@@ -228,29 +227,27 @@ public class KlijentForma extends javax.swing.JFrame {
         p.setKorisnikZa(jTextField2.getText());
         p.setTekstPoruke(jTextField3.getText());
 
-        new Thread(() -> {
-            try {
-                ControllerUI.getInstance().sendMessage(p);
-            } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(
-                        this,
-                        e.getMessage(),
-                        "Greska",
-                        JOptionPane.ERROR_MESSAGE
-                ));
-            }
-        }).start();
+        try {
+            ControllerUI.getInstance().sendMessage(p);
+        } catch (Exception e) {
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Greska",
+                    JOptionPane.ERROR_MESSAGE
+            ));
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new Thread(() -> {
-            try {
-                ControllerUI.getInstance().logout(table.getPoruke());
-                this.dispose();
-                System.exit(1);
-            } catch (Exception e) {
-            }
-        }).start();
+        try {
+            ControllerUI.getInstance().logout(table.getPoruke());
+            this.dispose();
+            System.exit(1);
+        } catch (Exception e) {
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -308,24 +305,15 @@ public class KlijentForma extends javax.swing.JFrame {
 
     public void getMessage(Poruka poruka) {
         try {
-            table.fireTableDataChanged();
+
             SwingUtilities.invokeLater(() -> {
                 jTextField4.setText(poruka.getTekstPoruke());
             });
             table.dodajPoruku(poruka);
+            table.fireTableDataChanged();
         } catch (Exception e) {
             System.out.println("Greska pri prijemu poruke!");
         }
     }
 
-    private void configureCloseBehavior() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                ControllerUI.getInstance().disconnect();
-                dispose();
-            }
-        });
-    }
 }

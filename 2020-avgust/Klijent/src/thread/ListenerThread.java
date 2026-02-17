@@ -12,6 +12,7 @@ import komunikacija.Poruka;
 import komunikacija.Receiver;
 import komunikacija.Response;
 import komunikacija.Sender;
+import komunikacija.TipOdgovora;
 
 /**
  *
@@ -45,9 +46,24 @@ public class ListenerThread extends Thread {
                     ));
                     continue;
                 }
-                if (response.getResult() instanceof Poruka) {
-                    Poruka p = (Poruka) response.getResult();
-                    klijentForma.getMessage(p);
+                
+                TipOdgovora tip = response.getTipOdgovora();
+                if (tip == null) {
+                    continue; // Stari format odgovora bez tipa - preskačemo
+                }
+                
+                switch (tip) {
+                    case NOVA_PORUKA:
+                        Poruka p = (Poruka) response.getResult();
+                        klijentForma.getMessage(p);
+                        break;
+                    case USPESNO:
+                        // Uspešne operacije se obično obrađuju sinhrono u ControllerUI
+                        // Ovde možemo dodati dodatnu logiku ako je potrebno
+                        break;
+                    default:
+                        // Za buduće tipove odgovora
+                        break;
                 }
             } catch (Exception e) {
                 break;

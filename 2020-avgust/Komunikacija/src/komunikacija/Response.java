@@ -14,6 +14,7 @@ public class Response implements Serializable {
 
     private Exception exception;
     private Object result;
+    private TipOdgovora tipOdgovora;
 
     public Response() {
     }
@@ -21,6 +22,12 @@ public class Response implements Serializable {
     public Response(Exception exception, Object result) {
         this.exception = exception;
         this.result = result;
+    }
+
+    public Response(Exception exception, Object result, TipOdgovora tipOdgovora) {
+        this.exception = exception;
+        this.result = result;
+        this.tipOdgovora = tipOdgovora;
     }
 
     public Object getResult() {
@@ -37,6 +44,14 @@ public class Response implements Serializable {
 
     public void setException(Exception exception) {
         this.exception = exception;
+    }
+
+    public TipOdgovora getTipOdgovora() {
+        return tipOdgovora;
+    }
+
+    public void setTipOdgovora(TipOdgovora tipOdgovora) {
+        this.tipOdgovora = tipOdgovora;
     }
 
 }

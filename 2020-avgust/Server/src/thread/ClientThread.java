@@ -12,6 +12,7 @@ import komunikacija.Receiver;
 import komunikacija.Request;
 import komunikacija.Response;
 import komunikacija.Sender;
+import komunikacija.TipOdgovora;
 
 import server.Server;
 
@@ -45,19 +46,21 @@ public class ClientThread extends Thread {
                         case LOGIN: {
                             login(request);
                             response.setResult(true);
+                            response.setTipOdgovora(TipOdgovora.USPESNO);
                         }
                         break;
                         case POSALJI_PORUKU: {
                             posaljiPoruku(request);
                             response.setResult(true);
+                            response.setTipOdgovora(TipOdgovora.USPESNO);
                         }
                         break;
                         case SACUVAJ_PORUKE: {
                             List<Poruka> poruke = (List<Poruka>) request.getArgument();
                             DatabaseBroker dbbr = new DatabaseBroker();
                             dbbr.sacuvajPoruke(poruke);
-                            server.removeClient(this);
                             response.setResult(true);
+                            response.setTipOdgovora(TipOdgovora.USPESNO);
                         }
                         break;
                         default:

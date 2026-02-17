@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import komunikacija.Poruka;
 import komunikacija.Response;
+import komunikacija.TipOdgovora;
 import thread.ClientThread;
 
 /**
@@ -91,7 +92,7 @@ public class Server {
     public void posaljiPoruku(ClientThread senderClient, Poruka poruka) throws Exception {
         for (ClientThread ct : onlineKlijenti) {
             if (ct.getTrenutniKorisnik().equals(poruka.getKorisnikZa())) {
-                Response response = new Response(null, poruka);
+                Response response = new Response(null, poruka, TipOdgovora.NOVA_PORUKA);
                 ct.send(response);
                 return;
             }
@@ -125,7 +126,7 @@ public class Server {
         poruka.setKorisnikOd("SERVER");
         poruka.setKorisnikZa("SVI");
         poruka.setTekstPoruke("[SERVER] " + tekst);
-        broadcast(new Response(null, poruka));
+        broadcast(new Response(null, poruka, TipOdgovora.NOVA_PORUKA));
     }
 
 }
