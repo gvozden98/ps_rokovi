@@ -11,9 +11,8 @@ public class Poruka implements Serializable {
     private LocalDateTime DatumVreme;
     private String TekstPoruke;
 
-    // Konstruktori (pobrinite se da koristite odgovarajuće konstruktore)
     public Poruka() {
-    }  //Default constructor
+    }
 
     public Poruka(int PorukaID, String korisnikOd, String korisnikZa, LocalDateTime DatumVreme, String TekstPoruke) {
         this.PorukaID = PorukaID;
@@ -23,7 +22,6 @@ public class Poruka implements Serializable {
         this.TekstPoruke = TekstPoruke;
     }
 
-    //Getteri i Setteri za svaki polje
     public int getPorukaID() {
         return PorukaID;
     }
